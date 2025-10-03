@@ -1,0 +1,26 @@
+{
+	"id": "game-faces",
+	"title": "Game Faces - A Roleplay Portrait Module",
+	"version": "1.0.0",
+	"compatibility": {
+		"minimum": "13",
+		"verified": "13"
+	},
+	"description": "<p>A lightweight roleplay portrait switcher for you and your party.</p>",
+	"flags": {
+		"canUpload": true
+	},
+	"esmodules": [
+		"scripts/game-faces.js",
+		"scripts/portrait-manager.js",
+		"scripts/portrait-display.js"
+	],
+	"languages": [
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "languages/en.json"
+		}
+	],
+	"styles": ["styles/game-faces.css"]
+}

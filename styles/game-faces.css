@@ -1,0 +1,25 @@
+/* individual portrait containers */
+.gf-container {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
+.gf-img {
+	width: 128px;
+	height: 128px;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+/* full bar, squares in a row */
+#gf-bar {
+	position: fixed;
+	display: flex;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	gap: 10px;
+	align-items: center;
+	padding: 15px;
+	z-index: 1000;
+}

@@ -22,3 +22,94 @@
 	align-items: center;
 	padding: 15px;
 }
+
+/* Context dialog overlay (modal-like) */
+
+/* Dark mode palette (flat) */
+/*
+	Palette provided by user (mapped):
+	#fbf5ef - lightest
+	#f2d3ab - pale yellow
+	#c69fa5 - pastel desat orange
+	#8b6d9c - light purple
+	#494d7e - mid-dark blue/purple
+	#27274  - darkest
+*/
+
+/* Use dark overlay and flat dialog background */
+.gf-context-overlay,
+#gf-context-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(39, 39, 52, 0.75); /* use darkest with alpha for overlay */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 10000;
+	-webkit-font-smoothing: antialiased;
+}
+
+.gf-dialog {
+	background: #272724; /* darkest */
+	color: #fbf5ef; /* lightest for primary text */
+	min-width: 360px;
+	max-width: 720px;
+	border-radius: 8px;
+	overflow: hidden;
+	font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+	box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+	border: 1px solid rgba(255,255,255,0.04);
+}
+
+.gf-dialog-header {
+	padding: 12px 16px;
+	border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.gf-dialog-header h3 {
+	margin: 0;
+	font-size: 15px;
+	color: #fbf5ef;
+}
+
+.gf-dialog-body {
+	padding: 14px 16px;
+	font-size: 14px;
+	color: #fbf5ef;
+}
+
+.gf-dialog-body small {
+	color: #f2d3ab; /* pale yellow for lighter emphasis */
+}
+
+.gf-dialog-footer {
+	padding: 10px 12px;
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+	border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+.gf-btn {
+	padding: 7px 12px;
+	border-radius: 6px;
+	border: 1px solid rgba(255,255,255,0.04);
+	background: #494d7e; /* mid-dark */
+	color: #fbf5ef;
+	cursor: pointer;
+	font-size: 13px;
+}
+
+.gf-btn:hover { background: #5b5f8f; }
+
+.gf-btn:active { transform: translateY(1px); }
+
+.gf-btn-primary {
+	background: #8b6d9c; /* light-ish purple */
+	color: #fbf5ef;
+	border: 1px solid rgba(255,255,255,0.06);
+}
+
+.gf-dialog .gf-dialog-body p { margin: 0 0 8px 0; }
+
+.gf-dialog .gf-dialog-body img { max-width: 100%; height: auto; display: block; }

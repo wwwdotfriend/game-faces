@@ -45,7 +45,9 @@ class PortraitDisplay {
 				const actor = game.actors.get(actorId);
 
 				if (!actor.isOwner) {
-					ui.notifications.warn(game.i18n.localize("GAMEFACES.NoPermissionExpression"));
+					ui.notifications.warn(
+						game.i18n.localize("GAMEFACES.NoPermissionExpression")
+					);
 					return;
 				}
 
@@ -63,11 +65,120 @@ class PortraitDisplay {
 				}));
 
 				foundry.applications.api.DialogV2.wait({
-					window: { title: game.i18n.localize("GAMEFACES.WindowTitle") },
-					content: `<p>${game.i18n.format("GAMEFACES.SelectExpressionFor", {name: actor.name})}</p>`,
+					window: {
+						title: game.i18n.localize("GAMEFACES.WindowTitle"),
+					},
+					content: `<p>${game.i18n.format(
+						"GAMEFACES.SelectExpressionFor",
+						{ name: actor.name }
+					)}</p>`,
 					buttons,
 					rejectClose: false,
 				});
+			});
+
+			img.addEventListener("contextmenu", async (event) => {
+				event.preventDefault();
+				const actorId = img.dataset.actorId;
+				const actor = game.actors.get(actorId);
+
+				if (!actor?.isOwner) {
+					ui.notifications.warn(
+						game.i18n.localize("GAMEFACES.NoPermissionExpression")
+					);
+					return;
+				}
+
+				// Remove any existing overlay
+				const old = document.getElementById("gf-context-overlay");
+				if (old) old.remove();
+
+				// Create overlay and centered dialog (modal-like)
+				const overlay = document.createElement("div");
+				overlay.id = "gf-context-overlay";
+				overlay.className = "gf-context-overlay";
+
+				const title =
+					game.i18n.localize("GAMEFACES.WindowTitle") ||
+					"Configure Portraits";
+				const bodyText =
+					game.i18n.format("GAMEFACES.ConfigurePortraitsFor", {
+						name: actor.name,
+					}) || "";
+
+				overlay.innerHTML = `
+					<div class="gf-dialog" role="dialog" aria-modal="true" aria-label="${title}">
+						<header class="gf-dialog-header"><h3>${title}</h3></header>
+						<div class="gf-dialog-body">${bodyText}</div>
+						<footer class="gf-dialog-footer">
+							<button class="gf-btn gf-btn-primary" data-action="open">Open Config</button>
+							<button class="gf-btn" data-action="cancel">Cancel</button>
+						</footer>
+					</div>
+				`;
+
+				document.body.appendChild(overlay);
+
+				// Focus handling and cleanup
+				const dialog = overlay.querySelector(".gf-dialog");
+				const firstBtn = overlay.querySelector("button");
+				if (firstBtn) firstBtn.focus();
+
+				const cleanup = () => {
+					overlay.remove();
+					document.removeEventListener("keydown", onKeyDown);
+					document.removeEventListener("click", onOutsideClick);
+				};
+
+				const onOutsideClick = (e) => {
+					if (!dialog.contains(e.target)) cleanup();
+				};
+
+				const onKeyDown = (e) => {
+					if (e.key === "Escape") cleanup();
+					// Basic focus trap: keep focus inside dialog
+					if (e.key === "Tab") {
+						const focusable = Array.from(
+							dialog.querySelectorAll("button")
+						);
+						if (focusable.length === 0) return;
+						const idx = focusable.indexOf(document.activeElement);
+						if (e.shiftKey) {
+							if (idx === 0) {
+								focusable[focusable.length - 1].focus();
+								e.preventDefault();
+							}
+						} else {
+							if (idx === focusable.length - 1) {
+								focusable[0].focus();
+								e.preventDefault();
+							}
+						}
+					}
+				};
+
+				dialog.addEventListener("click", (e) => {
+					e.stopPropagation();
+					const btn = e.target.closest("button[data-action]");
+					if (!btn) return;
+					const action = btn.dataset.action;
+					if (action === "open") {
+						if (window.PortraitConfigApp) {
+							const actorObj = game.actors.get(actorId);
+							new window.PortraitConfigApp(actorObj).render(true);
+						} else {
+							ui.notifications.info(
+								game.i18n.localize(
+									"GAMEFACES.OpenConfigPlaceholder"
+								) || "Open Config"
+							);
+						}
+					}
+					cleanup();
+				});
+
+				document.addEventListener("click", onOutsideClick);
+				document.addEventListener("keydown", onKeyDown);
 			});
 		});
 	}

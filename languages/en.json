@@ -1,3 +1,15 @@
 {
-	"GAME-FACES": {}
+    "GAMEFACES": {
+        "SelectExpressionFor": "Select an expression for {name}",
+        "NoPermissionConfigure": "You don't have permission to configure this character's expressions.",
+        "WindowTitle": "Choose Expression",
+        "AddPortrait": "Add Portrait",
+        "ExpressionLabel": "Expression Name",
+        "NewExpression": "New Expression",
+        "BrowseFiles": "Browse Files",
+        "ConfigurePortraitsFor": "Configure Portraits for {name}",
+        "SaveChanges": "Save Changes",
+        "PortraitPath": "Image Path",
+        "NoPermissionExpression": "You don't have permission to change this character's expression."
+    }
 }

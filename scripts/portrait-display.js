@@ -31,7 +31,7 @@ class PortraitDisplay {
 		img.src = data.portraits[data.activeIndex];
 		img.alt = actor.name;
 		img.classList.add("gf-img");
-		img.dataset.actorId = actor.id; 
+		img.dataset.actorId = actor.id;
 
 		return img;
 	}
@@ -45,9 +45,7 @@ class PortraitDisplay {
 				const actor = game.actors.get(actorId);
 
 				if (!actor.isOwner) {
-					ui.notifications.warn(
-						"You don't have permission to change this character's expression."
-					);
+					ui.notifications.warn(game.i18n.localize("GAMEFACES.NoPermissionExpression"));
 					return;
 				}
 
@@ -56,19 +54,19 @@ class PortraitDisplay {
 				const buttons = data.labels.map((label, index) => ({
 					action: `emotion${index}`,
 					label,
-					icon: '<i class="fas fa-masks-theater"></i>',
+					// icon: '<i class="fas fa-masks-theater"></i>',
 					default: index === data.activeIndex,
 					callback: () => {
 						GameFacesData.setActivePortrait(actorId, index);
 						img.src = data.portraits[index];
-					}
+					},
 				}));
 
 				foundry.applications.api.DialogV2.wait({
-					window: { title: "Choose Expression" },
-					content: `<p>Select an expression for ${actor.name}</p>`,
+					window: { title: game.i18n.localize("GAMEFACES.WindowTitle") },
+					content: `<p>${game.i18n.format("GAMEFACES.SelectExpressionFor", {name: actor.name})}</p>`,
 					buttons,
-					rejectClose: false
+					rejectClose: false,
 				});
 			});
 		});

@@ -31,7 +31,7 @@ class PortraitDisplay {
 		img.src = data.portraits[data.activeIndex];
 		img.alt = actor.name;
 		img.classList.add("gf-img");
-		img.dataset.actorId = actor.id; // Store actor ID on element
+		img.dataset.actorId = actor.id; 
 
 		return img;
 	}
@@ -42,6 +42,15 @@ class PortraitDisplay {
 		portraits.forEach((img) => {
 			img.addEventListener("click", async (event) => {
 				const actorId = img.dataset.actorId;
+				const actor = game.actors.get(actorId);
+
+				if (!actor.isOwner) {
+					ui.notifications.warn(
+						"You don't have permission to change this character's expression."
+					);
+					return;
+				}
+
 				const data = GameFacesData.getPortraitsForActor(actorId);
 
 				const buttons = {};

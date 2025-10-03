@@ -53,23 +53,23 @@ class PortraitDisplay {
 
 				const data = GameFacesData.getPortraitsForActor(actorId);
 
-				const buttons = {};
-				data.labels.forEach((label, index) => {
-					buttons[`emotion${index}`] = {
-						icon: '<i class="fas fa-masks-theater"></i>',
-						label: label,
-						callback: () => {
-							GameFacesData.setActivePortrait(actorId, index);
-							img.src = data.portraits[index];
-						},
-					};
-				});
+				const buttons = data.labels.map((label, index) => ({
+					action: `emotion${index}`,
+					label,
+					icon: '<i class="fas fa-masks-theater"></i>',
+					default: index === data.activeIndex,
+					callback: () => {
+						GameFacesData.setActivePortrait(actorId, index);
+						img.src = data.portraits[index];
+					}
+				}));
 
-				new Dialog({
-					title: "Choose Expression",
-					buttons: buttons,
-					default: `emotion${data.activeIndex}`,
-				}).render(true);
+				foundry.applications.api.DialogV2.wait({
+					window: { title: "Choose Expression" },
+					content: `<p>Select an expression for ${actor.name}</p>`,
+					buttons,
+					rejectClose: false
+				});
 			});
 		});
 	}

@@ -118,10 +118,10 @@ Right-click a portrait in the bar to open the configuration window. You can:
 ## Installation
 
 ### Method 1: Foundry VTT Module Browser
-Search for **Game Faces** in the module browser and install directly or paste the [Manifest Link](https://github.com/wwwdotfriend/game-faces/blob/main/module.json).
+Search for **Game Faces** in the module browser and install directly or paste the [Manifest Link](https://github.com/wwwdotfriend/game-faces/releases/download/1.0.0/module.json).
 
 ```
-https://github.com/wwwdotfriend/game-faces/blob/main/module.json
+https://github.com/wwwdotfriend/game-faces/releases/download/1.0.0/module.json
 ```
 
 ### Method 2: Manual Installation

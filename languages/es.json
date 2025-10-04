@@ -3,7 +3,7 @@
         "SelectExpressionFor": "Selcciona una expresión para {name}",
         "NoPermissionConfigure": "No tienes permiso para configurar la expresión de este personaje.",
         "WindowTitle": "Selecciona Expresión",
-        "Upload Portrait" : "Subir Retrato",
+        "UploadPortrait" : "Subir Retrato",
         "AddPortrait": "Seleciona un Retrato",
         "ExpressionLabel" : "Nombre de Expresión",
         "NewExpression": "Nueva Expresión",

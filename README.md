@@ -163,7 +163,7 @@ https://github.com/wwwdotfriend/game-faces/releases/download/1.0.0/module.json
 ## License
 
 This module is distributed under the MIT License.  
-See [LICENSE](https://mit-license.org/) for details.
+See [LICENSE](LICENSE.md) for details.
 
 ---
 

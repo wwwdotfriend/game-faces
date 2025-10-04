@@ -155,6 +155,7 @@ https://github.com/wwwdotfriend/game-faces/blob/main/module.json
 - Mood indicators
 - GIF or WebM support
 - Show initiative in combat
+- Show IC Chat messages under portrait
 
 ---
 

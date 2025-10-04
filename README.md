@@ -1,6 +1,6 @@
 ![Static Badge](https://img.shields.io/badge/FOUNDRY-V13-red?style=for-the-badge)
 ![Static Badge](https://img.shields.io/badge/All%20Systems-red?style=for-the-badge)
-<img src=https://img.shields.io/badge/Foundry%20Package-1.0.0-red?style=for-the-badge&logo=foundryvirtualtabletop a=https://foundryvtt.com/packages/game-faces></img>
+<img src="https://img.shields.io/badge/Foundry%20Package-1.0.0-red?style=for-the-badge&logo=foundryvirtualtabletop" href="https://foundryvtt.com/packages/game-faces"></img>
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/internetfriendstudios)
 

@@ -3,14 +3,52 @@
         "SelectExpressionFor": "Selcciona una expresión para {name}",
         "NoPermissionConfigure": "No tienes permiso para configurar la expresión de este personaje.",
         "WindowTitle": "Selecciona Expresión",
+        "UploadPortrait" : "Subir Retrato",
         "AddPortrait": "Seleciona un Retrato",
-        "Upload Portrait" : "Subir Retrato",
         "ExpressionLabel" : "Nombre de Expresión",
         "NewExpression": "Nueva Expresión",
         "BrowseFiles": "Examina Archivos",
         "ConfigurePortraitsFor": "Configurar Retrato de {name}",
         "SaveChanges": "Guardar los Cambios",
         "PortraitPath": "Ruta de Imagen",
-        "NoPermissionExpression": "No tienes permiso para configurar la expresión de este personaje."
-    }
+        "NoPermissionExpression": "No tienes permiso para configurar la expresión de este personaje.",
+        "OpenConfigPlaceholder": "Opened GameFaces Config for {name}.",
+		"ChangeLabelTitle": "Change label for {label}.",
+		"AddGameFace": "Add Game Face",
+
+		"Settings": {
+			"PortraitSize": {
+				"Name": "Portrait Size",
+				"Hint": "Size of portrait images in pixels"
+			},
+			"BarPosition": {
+				"Name": "Bar Position",
+				"Hint": "Where to display the portrait bar",
+				"ChoiceTop": "Top of screen",
+				"ChoiceAboveHotbar": "Above hotbar"
+			},
+			"EdgePadding": {
+				"Name": "Top Padding",
+				"Hint": "Distance from top edge in pixels (only for 'Top' position)"
+			},
+			"DropShadow": {
+				"Name": "Drop Shadow",
+				"Hint": "Add a drop shadow around portrait images"
+			},
+			"BorderRadius": {
+				"Name": "Border Radius",
+				"Hint": "Round the corners of your portrait image."
+			},
+			"AddPortraitMenu": {
+				"Name": "Add Portrait",
+				"Label": "Add New Portrait",
+				"Hint": "Add a new portrait to a controlled character"
+			},
+			"PortraitGap": {
+				"Name": "Portrait Gap",
+				"Label": "Change Portrait Gap",
+				"Hint": "Change the gap between portraits."
+			}
+		}
+	}
 }

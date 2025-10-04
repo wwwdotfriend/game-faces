@@ -22,5 +22,6 @@
 			"path": "languages/en.json"
 		}
 	],
+		
 	"styles": ["styles/game-faces.css"]
 }

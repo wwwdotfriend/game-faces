@@ -1,4 +1,5 @@
 import { GameFacesData } from "./portrait-manager.js";
+import { updatePortraitStyles } from "./game-faces.js";
 
 class PortraitDisplay {
 	constructor() {
@@ -56,7 +57,6 @@ class PortraitDisplay {
 				const buttons = data.labels.map((label, index) => ({
 					action: `emotion${index}`,
 					label,
-					// icon: '<i class="fas fa-masks-theater"></i>',
 					default: index === data.activeIndex,
 					callback: () => {
 						GameFacesData.setActivePortrait(actorId, index);
@@ -97,85 +97,265 @@ class PortraitDisplay {
 				overlay.className = "gf-context-overlay";
 
 				const title =
-					game.i18n.localize("GAMEFACES.WindowTitle") ||
-					"Configure Portraits";
-				const bodyText =
 					game.i18n.format("GAMEFACES.ConfigurePortraitsFor", {
 						name: actor.name,
 					}) || "";
 
-				overlay.innerHTML = `
-					<div class="gf-dialog" role="dialog" aria-modal="true" aria-label="${title}">
-						<header class="gf-dialog-header"><h3>${title}</h3></header>
-						<div class="gf-dialog-body">${bodyText}</div>
-						<footer class="gf-dialog-footer">
-							<button class="gf-btn gf-btn-primary" data-action="open">Open Config</button>
-							<button class="gf-btn" data-action="cancel">Cancel</button>
-						</footer>
-					</div>
-					`;
+				let portraitData = GameFacesData.getPortraitsForActor(actorId);
 
-				document.body.appendChild(overlay);
-
-
-				const dialog = overlay.querySelector(".gf-dialog");
-				const firstBtn = overlay.querySelector("button");
-				if (firstBtn) firstBtn.focus();
+				const renderDialog = async () => {
+					const html =
+						await foundry.applications.handlebars.renderTemplate(
+							"modules/game-faces/templates/portrait-config.hbs",
+							{
+								title,
+								portraits: portraitData.portraits,
+								labels: portraitData.labels,
+								activeIndex: portraitData.activeIndex,
+							}
+						);
+					overlay.innerHTML = html;
+					setupDialogListeners();
+				};
 
 				const cleanup = () => {
 					overlay.remove();
 					document.removeEventListener("keydown", onKeyDown);
-					document.removeEventListener("click", onOutsideClick);
-				};
-
-				const onOutsideClick = (e) => {
-					if (!dialog.contains(e.target)) cleanup();
 				};
 
 				const onKeyDown = (e) => {
 					if (e.key === "Escape") cleanup();
-
-					if (e.key === "Tab") {
-						const focusable = Array.from(
-							dialog.querySelectorAll("button")
-						);
-						if (focusable.length === 0) return;
-						const idx = focusable.indexOf(document.activeElement);
-						if (e.shiftKey) {
-							if (idx === 0) {
-								focusable[focusable.length - 1].focus();
-								e.preventDefault();
-							}
-						} else {
-							if (idx === focusable.length - 1) {
-								focusable[0].focus();
-								e.preventDefault();
-							}
-						}
-					}
 				};
 
-				dialog.addEventListener("click", (e) => {
-					e.stopPropagation();
-					const btn = e.target.closest("button[data-action]");
-					if (!btn) return;
-					const action = btn.dataset.action;
-					if (action === "open") {
-						if (window.PortraitConfigApp) {
-							const actorObj = game.actors.get(actorId);
-							new window.PortraitConfigApp(actorObj).render(true);
-						} else {
-							ui.notifications.info(
-								game.i18n.localize(
-									"GAMEFACES.OpenConfigPlaceholder"
-								) || "Open Config"
-							);
-						}
-					}
-					cleanup();
-				});
+				const setupDialogListeners = () => {
+					const dialog = overlay.querySelector(".gf-dialog");
 
-				document.addEventListener("click", onOutsideClick);
+					dialog.addEventListener("click", async (e) => {
+						e.stopPropagation();
+						const btn = e.target.closest("button[data-action]");
+						if (!btn) return;
+						const action = btn.dataset.action;
+
+						if (action === "add") {
+							if (!game.user.isGM) {
+								ui.notifications.warn(
+									"Only GMs can add portrait files."
+								);
+								return;
+							}
+
+							overlay.style.display = "none";
+
+							Hooks.once("closeApplicationV2", (app) => {
+								if (
+									app instanceof
+									foundry.applications.apps.FilePicker
+								) {
+									overlay.style.display = "flex";
+								}
+							});
+
+							const fp = new foundry.applications.apps.FilePicker(
+								{
+									type: "image",
+									callback: async (path) => {
+										const filename = path.split("/").pop();
+										const label = filename.replace(
+											/\.[^/.]+$/,
+											""
+										);
+
+										await GameFacesData.addPortrait(
+											actorId,
+											path,
+											label
+										);
+
+										portraitData =
+											GameFacesData.getPortraitsForActor(
+												actorId
+											);
+										await renderDialog();
+										this.render();
+										updatePortraitStyles();
+									},
+								}
+							);
+
+							fp.browse();
+						}
+
+						if (action === "close") {
+							cleanup();
+						}
+
+						if (action === "browse") {
+							if (!game.user.isGM) {
+								ui.notifications.warn(
+									"Only GMs can change portrait files."
+								);
+								return;
+							}
+
+							const portraitItem = btn.closest(".portrait-item");
+							if (!portraitItem) {
+								ui.notifications.error(
+									"Could not find portrait to edit."
+								);
+								return;
+							}
+
+							const index = Array.from(
+								portraitItem.parentNode.children
+							).indexOf(portraitItem);
+							const currentPath = portraitData.portraits[index];
+
+							overlay.style.display = "none";
+
+							const hookId = Hooks.once(
+								"closeApplicationV2",
+								(app) => {
+									if (
+										app instanceof
+										foundry.applications.apps.FilePicker
+									) {
+										overlay.style.display = "flex";
+									}
+								}
+							);
+
+							const fp = new foundry.applications.apps.FilePicker(
+								{
+									type: "image",
+									current: currentPath,
+									callback: async (path) => {
+										const updatedData = { ...portraitData };
+										updatedData.portraits[index] = path;
+										await GameFacesData.updatePortraits(
+											actorId,
+											updatedData
+										);
+										portraitData = updatedData;
+										await renderDialog();
+										this.render();
+										updatePortraitStyles();
+									},
+								}
+							);
+
+							fp.browse();
+						}
+
+						if (action === "config") {
+							const portraitItem = btn.closest(".portrait-item");
+							const index = Array.from(
+								portraitItem.parentNode.children
+							).indexOf(portraitItem);
+							const currentLabel = portraitData.labels[index];
+
+							overlay.style.zIndex = 0;
+
+							try {
+								const newLabel =
+									await foundry.applications.api.DialogV2.prompt(
+										{
+											window: {
+												title: game.i18n.format(
+													"GAMEFACES.ChangeLabelTitle",
+													{ label: currentLabel }
+												),
+											},
+											content: `
+                            <div class="form-group">
+                                <label>Enter new label for "${currentLabel}":</label>
+                                <input name="newLabel" type="text" value="${currentLabel}" autofocus>
+                            </div>`,
+											ok: {
+												label: "Save",
+												callback: (
+													event,
+													button,
+													dialog
+												) =>
+													button.form.elements.newLabel.value.trim(),
+											},
+										}
+									);
+
+								if (newLabel && newLabel !== currentLabel) {
+									const updatedData = { ...portraitData };
+									updatedData.labels[index] = newLabel;
+									await GameFacesData.updatePortraits(
+										actorId,
+										updatedData
+									);
+									portraitData = updatedData;
+									await renderDialog();
+								}
+							} catch {
+								console.log("Label change cancelled.");
+							} finally {
+								overlay.style.zIndex = "";
+							}
+						}
+
+						if (action === "remove") {
+							const portraitItem = btn.closest(".portrait-item");
+							const index = Array.from(
+								portraitItem.parentNode.children
+							).indexOf(portraitItem);
+
+							overlay.style.zIndex = 0;
+
+							try {
+								const confirmDelete =
+									await foundry.applications.api.DialogV2.confirm(
+										{
+											window: {
+												title: game.i18n.localize(
+													"GAMEFACES.ConfirmDelete"
+												),
+											},
+											content: `<p>Remove portrait "${portraitData.labels[index]}"?</p>`,
+											rejectClose: false,
+										}
+									);
+
+								if (!confirmDelete) return;
+
+								const updatedData = { ...portraitData };
+								updatedData.portraits.splice(index, 1);
+								updatedData.labels.splice(index, 1);
+
+								if (
+									updatedData.activeIndex >=
+									updatedData.portraits.length
+								) {
+									updatedData.activeIndex = Math.max(
+										0,
+										updatedData.portraits.length - 1
+									);
+								} else if (updatedData.activeIndex > index) {
+									updatedData.activeIndex--;
+								}
+
+								await GameFacesData.updatePortraits(
+									actorId,
+									updatedData
+								);
+								portraitData = updatedData;
+								await renderDialog();
+								this.render();
+								updatePortraitStyles();
+							} finally {
+								overlay.style.zIndex = "";
+							}
+						}
+					});
+				};
+
+				await renderDialog();
+				document.body.appendChild(overlay);
 				document.addEventListener("keydown", onKeyDown);
 			});
 		});
@@ -187,21 +367,23 @@ class PortraitDisplay {
 			return;
 		}
 		this.bar.innerHTML = "";
+
 		const actors = game.actors.contents;
 		const actorsWithPortraits = actors.filter((actor) => {
 			const data = GameFacesData.getPortraitsForActor(actor.id);
 			return data.portraits.length > 0;
 		});
+
 		actorsWithPortraits.forEach((actor) => {
 			const container = this.createContainer(actor.id);
 			const img = this.createPortraitImage(actor);
-			if (img) {
-				container.appendChild(img);
-			}
+			if (img) container.appendChild(img);
 			this.bar.appendChild(container);
 		});
 
 		this.setupContextMenus();
+
+		updatePortraitStyles();
 	}
 }
 

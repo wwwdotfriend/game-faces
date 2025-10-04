@@ -1,0 +1,19 @@
+<form>
+	<div class="form-group">
+		<label>Select Character</label>
+		<select name="actor">
+			<option value="">-- Select Actor --</option>
+			{{#each actors}}
+			<option value="{{id}}">{{name}}</option>
+			{{/each}}
+		</select>
+	</div>
+	<div class="form-group">
+		<label>Image Path</label>
+		<div style="display: flex; gap: 8px;">
+			<input type="text" name="path" placeholder="path/to/image.png" style="flex: 1;">
+			<button type="button" name="browse"><i class="fas fa-file-image"></i> Browse</button>
+		</div>
+	</div>
+	<button type="submit"><i class="fas fa-check"></i> Add Portrait</button>
+</form>

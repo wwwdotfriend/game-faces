@@ -1,0 +1,20 @@
+<div class="gf-dialog" role="dialog" aria-modal="true" aria-label="{{title}}">
+	<header class="gf-dialog-header"><h3>{{title}}</h3></header>
+	<body class="gf-dialog-body">
+        <div class="portrait-grid">
+            {{#each portraits as |path index|}}
+                <div class="portrait-item">
+                    <img src="{{path}}" alt="{{lookup ../labels index}}" class="portrait-img">
+                    <label class="portrait-label">{{lookup ../labels index}}</label>
+                    <button class="portrait-btn" data-action="config">Change label for {{lookup ../labels index}}</button>
+                    <button class="portrait-btn" data-action="remove">Remove {{lookup ../labels index}}</button>
+		            <button class="portrait-btn" data-action="browse">Change Portrait</button>
+                </div>
+            {{/each}}
+        </div>
+    </body>
+	<footer class="gf-dialog-footer">
+		<button class="gf-btn" data-action="add">Add</button>
+		<button class="gf-btn" data-action="close">Close</button>
+	</footer>
+</div>

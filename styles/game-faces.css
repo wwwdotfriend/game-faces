@@ -27,7 +27,7 @@
 
 /* Dark mode palette (flat) */
 /*
-	Palette provided by user (mapped):
+	Rose Pine (mapped):
 	#fbf5ef - lightest
 	#f2d3ab - pale yellow
 	#c69fa5 - pastel desat orange
@@ -36,12 +36,11 @@
 	#27274  - darkest
 */
 
-/* Use dark overlay and flat dialog background */
 .gf-context-overlay,
 #gf-context-overlay {
 	position: fixed;
 	inset: 0;
-	background: rgba(39, 39, 52, 0.75); /* use darkest with alpha for overlay */
+	background: rgba(38, 35, 58, 0.75);
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -50,8 +49,8 @@
 }
 
 .gf-dialog {
-	background: #272724; /* darkest */
-	color: #fbf5ef; /* lightest for primary text */
+	background: #191724; 
+	color: #e0def4; 
 	min-width: 360px;
 	max-width: 720px;
 	border-radius: 8px;
@@ -94,18 +93,18 @@
 	padding: 7px 12px;
 	border-radius: 6px;
 	border: 1px solid rgba(255,255,255,0.04);
-	background: #494d7e; /* mid-dark */
+	background: #26233a; /* mid-dark */
 	color: #fbf5ef;
 	cursor: pointer;
 	font-size: 13px;
 }
 
-.gf-btn:hover { background: #5b5f8f; }
+.gf-btn:hover { background: #26233a; }
 
 .gf-btn:active { transform: translateY(1px); }
 
 .gf-btn-primary {
-	background: #8b6d9c; /* light-ish purple */
+	background: #26233a; /* light-ish purple */
 	color: #fbf5ef;
 	border: 1px solid rgba(255,255,255,0.06);
 }

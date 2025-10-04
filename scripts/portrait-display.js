@@ -89,11 +89,9 @@ class PortraitDisplay {
 					return;
 				}
 
-				// Remove any existing overlay
 				const old = document.getElementById("gf-context-overlay");
 				if (old) old.remove();
 
-				// Create overlay and centered dialog (modal-like)
 				const overlay = document.createElement("div");
 				overlay.id = "gf-context-overlay";
 				overlay.className = "gf-context-overlay";
@@ -115,11 +113,11 @@ class PortraitDisplay {
 							<button class="gf-btn" data-action="cancel">Cancel</button>
 						</footer>
 					</div>
-				`;
+					`;
 
 				document.body.appendChild(overlay);
 
-				// Focus handling and cleanup
+
 				const dialog = overlay.querySelector(".gf-dialog");
 				const firstBtn = overlay.querySelector("button");
 				if (firstBtn) firstBtn.focus();
@@ -136,7 +134,7 @@ class PortraitDisplay {
 
 				const onKeyDown = (e) => {
 					if (e.key === "Escape") cleanup();
-					// Basic focus trap: keep focus inside dialog
+
 					if (e.key === "Tab") {
 						const focusable = Array.from(
 							dialog.querySelectorAll("button")

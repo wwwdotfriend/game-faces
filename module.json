@@ -34,5 +34,7 @@
       "src": "styles/game-faces.css"
     }
   ],
-  "url": "https://github.com/wwwdotfriend/game-faces"
+  "url": "https://github.com/wwwdotfriend/game-faces",
+  "manifest": "https://github.com/wwwdotfriend/game-faces/blob/main/module.json",
+  "download": "https://github.com/my-user/my-module/releases/download/1.0.0/game-faces-1.0.0.zip"
 }

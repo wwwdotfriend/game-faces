@@ -1,0 +1,16 @@
+{
+    "GAMEFACES": {
+        "SelectExpressionFor": "Selcciona una expresión para {name}",
+        "NoPermissionConfigure": "No tienes permiso para configurar la expresión de este personaje.",
+        "WindowTitle": "Selecciona Expresión",
+        "AddPortrait": "Seleciona un Retrato",
+        "Upload Portrait" : "Subir Retrato",
+        "ExpressionLabel" : "Nombre de Expresión",
+        "NewExpression": "Nueva Expresión",
+        "BrowseFiles": "Examina Archivos",
+        "ConfigurePortraitsFor": "Configurar Retrato de {name}",
+        "SaveChanges": "Guardar los Cambios",
+        "PortraitPath": "Ruta de Imagen",
+        "NoPermissionExpression": "No tienes permiso para configurar la expresión de este personaje."
+    }
+}

@@ -1,6 +1,5 @@
-![Static Badge](https://img.shields.io/badge/FOUNDRY-V13-red?style=for-the-badge)
+![Static Badge](https://img.shields.io/badge/Foundry-V13-red?style=for-the-badge&logo=foundryvirtualtabletop&logoColor=white)
 ![Static Badge](https://img.shields.io/badge/All%20Systems-red?style=for-the-badge)
-[![Foundry Package Badge](https://img.shields.io/badge/Foundry%20Package-1.0.0-red?style=for-the-badge&logo=foundryvirtualtabletop)](https://foundryvtt.com/packages/game-faces)
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/internetfriendstudios)
 

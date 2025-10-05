@@ -20,6 +20,7 @@
 ## Overview
 
 Game Faces adds a customizable portrait bar to Foundry VTT, allowing players to switch between multiple portrait expressions for their characters.  
+
 Portraits can be added, renamed, removed, or switched for a different image.
 
 ---

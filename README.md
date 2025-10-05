@@ -30,6 +30,7 @@ Portraits can be added, renamed, removed, or switched for a different image.
 - [Screenshots](#screenshots)
 - [Chat Commands](#chat-commands)
 - [Settings](#settings)
+- [Usage](#basic-usage)
 - [Adding and Managing Portraits](#adding-and-managing-portraits)
 - [Installation](#installation)
 - [Compatibility](#compatibility)
@@ -58,10 +59,10 @@ Portraits can be added, renamed, removed, or switched for a different image.
 ### Portrait Bar Bottom
 ![Portrait Bar Bottom](https://i.imgur.com/0Buv2Ow.png)
 
-### Left Click Menu
+### Left Click Menu - Expression Switcher
 ![Left Click Menu](https://i.imgur.com/QJTyhun.png)
 
-### Right Click Menu / Portrait Config  
+### Right Click Menu - Portrait Config  
 ![Portrait Configuration Screenshot](https://i.imgur.com/oIbeJO0.png)
 
 
@@ -94,10 +95,20 @@ Game Faces provides several client-side options under **Module Settings**.
 
 ---
 
+## Basic Usage
+1. (GM Only) In the Game Settings (Sidebar → Cogwheel), go to **Configure Settings → Game Faces → Add Portrait**.
+2. Select an actor.
+3. Browse or enter an image path.
+4. Save to add the portrait, the label will be set to the filename. A portrait for this actor should show up at the top of your screen.
+5. `Right click` the portrait to open the config menu.
+6. Change the label to make your life easier.
+7. (Optional) Add more portraits!!
+8. Close the config menu and `left click ` the portrait to change expressions. Or use one of the [chat commands](#chat-commands).
+
 ## Adding and Managing Portraits
 
 ### Add a New Portrait (GMs Only)
-#### If Actor Has No Portraits
+#### If Actor Has NO Portraits
 1. In the Game Settings (Sidebar → Cogwheel), go to **Configure Settings → Game Faces → Add Portrait**.
 2. Select an actor.
 3. Browse or enter an image path.

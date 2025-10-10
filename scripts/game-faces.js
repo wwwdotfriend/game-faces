@@ -232,6 +232,11 @@ Hooks.on("ready", function () {
 	Hooks.on("renderHotbar", () => {
 		updatePortraitStyles();
 	});
+
+	Hooks.on("updateActor", (actor, changes, options, userId) => {
+        if (changes.flags?.[GameFaces.ID]?.[GameFaces.FLAGS.PORTRAITS]) {
+            window.PortraitDisplay?.render();
+	}});
 });
 
 

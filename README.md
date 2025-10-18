@@ -8,7 +8,7 @@
 
 <h1 style="text-align: center;">Game Faces</h1>
 
-![Portrait Bar Screenshot](https://i.imgur.com/LyvjwS4.png)
+![Portrait Bar Screenshot](https://i.imgur.com/HonG3Kl.jpeg)
 
 <p style="text-align: center;"><i><b>A lightweight roleplay portrait switcher for you and your party.</i></b></p>
 
@@ -54,16 +54,16 @@ Portraits can be added, renamed, removed, or switched for a different image.
 ## Screenshots
 
 ### Portrait Bar Top
-![Portrait Bar Screenshot](https://i.imgur.com/LyvjwS4.png)
+![Portrait Bar Screenshot](https://i.imgur.com/aieESU7.jpeg)
 
 ### Portrait Bar Bottom
-![Portrait Bar Bottom](https://i.imgur.com/0Buv2Ow.png)
+![Portrait Bar Bottom](https://i.imgur.com/OpNMKLD.jpeg)
 
 ### Left Click Menu - Expression Switcher
-![Left Click Menu](https://i.imgur.com/QJTyhun.png)
+![Left Click Menu](https://i.imgur.com/aV40cUK.png)
 
 ### Right Click Menu - Portrait Config  
-![Portrait Configuration Screenshot](https://i.imgur.com/oIbeJO0.png)
+![Portrait Configuration Screenshot](https://i.imgur.com/gp0jG97.png)
 
 
 ---

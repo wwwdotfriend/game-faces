@@ -83,7 +83,6 @@ class AddPortraitMenu extends foundry.applications.api.HandlebarsApplicationMixi
 					const filename = path.split("/").pop();
 					const label = filename.replace(/\.[^/.]+$/, "");
 
-					// call portrait add
 					const result = await GameFacesData.addPortrait(
 						actorId,
 						path,
@@ -91,7 +90,6 @@ class AddPortraitMenu extends foundry.applications.api.HandlebarsApplicationMixi
 					);
 
 					if (!result) {
-						// addPortrait returns null when portrait already exists or update failed
 						ui.notifications.warn(
 							"Portrait not added (it may already exist)."
 						);
@@ -207,36 +205,148 @@ Hooks.on("init", function () {
 		type: AddPortraitMenu,
 		restricted: false,
 	});
+
+	game.settings.register(GameFaces.ID, GameFaces.SETTINGS.BAR_VISIBLE, {
+    name: "Show Portrait Bar",
+    hint: "Controls visibility of the portrait bar for all players",
+    default: true,
+    type: Boolean,
+    scope: "world",
+    config: true,
+    onChange: (value) => {
+        const bar = document.getElementById("gf-bar");
+        if (bar) {
+            bar.style.display = value ? "" : "none";
+        }
+    }
+	});
+
+	game.settings.register(GameFaces.ID, GameFaces.SETTINGS.HIDDEN_PORTRAITS, {
+    name: "Hidden Portraits",
+    hint: "Array of hidden portrait IDs (GM only)",
+    default: [],
+    type: Array,
+    scope: "world",
+    config: false,
+    onChange: () => {
+        window.PortraitDisplay?.render();
+    }
+	});
 });
 
 Hooks.on("ready", function () {
-	console.log(
-		"Game Faces | Core initialization complete. Game data is available."
-	);
+    console.log("Game Faces | Core initialization complete.");
 
-	const display = new PortraitDisplay();
-	display.createBar();
+    const display = new PortraitDisplay();
+    display.createBar();
 
-	updatePortraitStyles();
+    updatePortraitStyles();
 
-	display.render();
+    display.render();
 
-	window.GameFaces = GameFaces;
-	window.GameFacesData = GameFacesData;
-	window.PortraitDisplay = display;
+    window.GameFaces = GameFaces;
+    window.GameFacesData = GameFacesData;
+    window.PortraitDisplay = display;
 
-	window.addEventListener("resize", () => {
-		updatePortraitStyles();
-	});
+    window.addEventListener("resize", () => {
+        updatePortraitStyles();
+    });
 
-	Hooks.on("renderHotbar", () => {
-		updatePortraitStyles();
-	});
+    Hooks.on("renderHotbar", () => {
+        updatePortraitStyles();
+    });
 
-	Hooks.on("updateActor", (actor, changes, options, userId) => {
+    Hooks.on("updateActor", (actor, changes, options, userId) => {
         if (changes.flags?.[GameFaces.ID]?.[GameFaces.FLAGS.PORTRAITS]) {
             window.PortraitDisplay?.render();
-	}});
+        }
+    });
+
+    Hooks.on("chatMessage", (chatLog, messageText, chatData) => {
+        if (messageText === "/gft" || messageText === "/gf toggle") {
+            const bar = document.getElementById("gf-bar");
+            if (bar) {
+                const isHidden = bar.style.display === "none";
+                bar.style.display = isHidden ? "" : "none";
+                ui.notifications.info(
+                    `Portrait bar ${isHidden ? "shown" : "hidden"}`
+                );
+            }
+            return false;
+        }
+
+		if (messageText === "/gfa" || messageText === "/gf all") {
+			if (!game.user.isGM) {
+				ui.notifications.warn("Only GMs can use this command.");
+				return false;
+			}
+			
+			const currentState = game.settings.get(GameFaces.ID, GameFaces.SETTINGS.BAR_VISIBLE);
+			game.settings.set(GameFaces.ID, GameFaces.SETTINGS.BAR_VISIBLE, !currentState);
+			
+			ui.notifications.info(
+				`Portrait bar ${!currentState ? "hidden" : "shown"} for all players`
+			);
+			return false;
+		}
+
+        if (!messageText.startsWith("/gf")) return true;
+
+        const parts = messageText.split(" ");
+        const label = parts.slice(1).join(" ").trim();
+
+        if (!label) {
+            ui.notifications.warn("Usage: /gf (expression label) OR /gft");
+            return false;
+        }
+
+        let targetActors = [];
+        
+        if (game.user.isGM) {
+            const controlledTokens = canvas.tokens.controlled;
+            if (controlledTokens.length === 0) {
+                ui.notifications.warn("No tokens selected.");
+                return false;
+            }
+            targetActors = controlledTokens.map(t => t.actor).filter(a => a);
+        } else {
+            targetActors = game.actors.filter(a => a.isOwner);
+        }
+
+        if (targetActors.length === 0) {
+            ui.notifications.warn(
+                game.user.isGM 
+                    ? "Select a token first." 
+                    : "You don't control any actors."
+            );
+            return false;
+        }
+
+        let found = false;
+        for (const actor of targetActors) {
+            const data = GameFacesData.getPortraitsForActor(actor.id);
+            const index = data.labels.findIndex(
+                l => l.toLowerCase() === label.toLowerCase()
+            );
+
+            if (index !== -1) {
+                GameFacesData.setActivePortrait(actor.id, index);
+                ui.notifications.info(
+                    `Changed ${actor.name}'s expression to "${data.labels[index]}"`
+                );
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            ui.notifications.warn(
+                `Expression "${label}" not found on ${game.user.isGM ? "selected" : "your"} character${targetActors.length > 1 ? "s" : ""}.`
+            );
+        }
+
+        return false;
+    });
 });
 
 
@@ -254,11 +364,24 @@ class GameFaces {
 		DROP_SHADOW: "drop-shadow",
 		BORDER_RADIUS: "border-radius",
 		ADD_PORTRAIT: "add-portrait",
-		PORTRAIT_GAP: "portrait-gap"
+		PORTRAIT_GAP: "portrait-gap",
+		BAR_VISIBLE: "bar-visible",
+		HIDDEN_PORTRAITS: "hidden-portraits"
 	};
 }
 
 function updatePortraitStyles() {
+    const bar = document.getElementById("gf-bar");
+    if (!bar) return;
+    
+    const visible = game.settings.get(GameFaces.ID, GameFaces.SETTINGS.BAR_VISIBLE);
+    if (!visible) {
+        bar.style.display = "none";
+        return;
+    } else {
+        bar.style.display = "";
+    }
+
 	const size = game.settings.get(
 		GameFaces.ID,
 		GameFaces.SETTINGS.PORTRAIT_SIZE

@@ -185,6 +185,38 @@ class PortraitDisplay {
 							fp.browse();
 						}
 
+						if (action === "hide") {
+							if (!game.user.isGM) {
+								ui.notifications.warn("Only GMs can hide portraits.");
+								return;
+							}
+
+							const portraitItem = btn.closest(".portrait-item");
+							if (!portraitItem) {
+								ui.notifications.error("Could not find portrait to hide.");
+								return;
+							}
+
+							const index = Array.from(portraitItem.parentNode.children).indexOf(portraitItem);
+							
+							let hiddenPortraits = game.settings.get(GameFaces.ID, GameFaces.SETTINGS.HIDDEN_PORTRAITS) || [];
+							
+							const portraitId = `${actorId}-${index}`;
+
+							if (hiddenPortraits.includes(portraitId)) {
+								hiddenPortraits = hiddenPortraits.filter(id => id !== portraitId);
+								ui.notifications.info(`Portrait "${portraitData.labels[index]}" shown for all players`);
+							} else {
+								hiddenPortraits.push(portraitId);
+								ui.notifications.info(`Portrait "${portraitData.labels[index]}" hidden from all players`);
+							}
+
+							await game.settings.set(GameFaces.ID, GameFaces.SETTINGS.HIDDEN_PORTRAITS, hiddenPortraits);
+
+							await renderDialog();
+							this.render();
+						}
+
 						if (action === "close") {
 							cleanup();
 						}

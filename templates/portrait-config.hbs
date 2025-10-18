@@ -1,20 +1,28 @@
 <div class="gf-dialog" role="dialog" aria-modal="true" aria-label="{{title}}">
-	<header class="gf-dialog-header"><h3>{{title}}</h3></header>
-	<body class="gf-dialog-body">
+    <header class="gf-dialog-header">
+        <h3>{{title}}</h3>
+    </header>
+    <div class="gf-dialog-body">
         <div class="portrait-grid">
             {{#each portraits as |path index|}}
                 <div class="portrait-item">
                     <img src="{{path}}" alt="{{lookup ../labels index}}" class="portrait-img">
                     <label class="portrait-label">{{lookup ../labels index}}</label>
-                    <button class="portrait-btn" data-action="config">Change label for {{lookup ../labels index}}</button>
-                    <button class="portrait-btn" data-action="remove">Remove {{lookup ../labels index}}</button>
-		            <button class="portrait-btn" data-action="browse">Change Portrait</button>
+                    <button class="portrait-btn" data-action="config" title="Change label">
+                        <i class="fas fa-tag"></i> Label
+                    </button>
+                    <button class="portrait-btn" data-action="browse" title="Change image">
+                        <i class="fas fa-image"></i> Image
+                    </button>
+                    <button class="portrait-btn" data-action="remove" title="Remove portrait">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
                 </div>
             {{/each}}
         </div>
-    </body>
-	<footer class="gf-dialog-footer">
-		<button class="gf-btn" data-action="add">Add</button>
-		<button class="gf-btn" data-action="close">Close</button>
-	</footer>
+    </div>
+    <footer class="gf-dialog-footer">
+        <button class="gf-btn" data-action="add"><i class="fas fa-plus"></i> Add Portrait</button>
+        <button class="gf-btn" data-action="close"><i class="fas fa-x"></i> Close</button>
+    </footer>
 </div>

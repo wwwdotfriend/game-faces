@@ -128,55 +128,95 @@
 }
 
 /* Portrait config styling */
+.gf-dialog {
+    background: #191724;
+    color: #e0def4;
+    min-width: 500px;
+    max-width: 90vw;
+    max-height: 85vh;
+    border-radius: 8px;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    display: flex;
+    flex-direction: column;
+}
+
+.gf-dialog-body {
+    padding: 0;
+    font-size: 14px;
+    color: #fbf5ef;
+    overflow-y: auto;
+    flex: 1;
+}
+
 .portrait-grid {
-	display: flex;
-	flex-direction: row;
-	gap: 16px;
-	overflow-x: auto;
-	padding: 16px 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+    padding: 16px;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
 .portrait-item {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 8px;
-	min-width: 128px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.2s ease;
+}
+
+.portrait-item:hover {
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .portrait-img {
-	width: 128px;
-	height: 128px;
-	object-fit: cover;
-	border-radius: 4px;
-	border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    transition: border-color 0.2s ease;
+}
+
+.portrait-item:hover .portrait-img {
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .portrait-label {
-	font-size: 15px;
-	font-weight: bold;
-	color: #e0def4;
-	text-align: center;
-	width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+    font-size: 13px;
+    font-weight: 600;
+    color: #e0def4;
+    text-align: center;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 4px;
+}
+
+.portrait-btn {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #26233a;
+    color: #e0def4;
+    cursor: pointer;
+    font-size: 11px;
+    width: 100%;
+    transition: background 0.2s ease;
 }
 
 .portrait-btn:hover {
-	background: #26233a;
+    background: #312e47;
 }
 
 .portrait-btn:active {
-	transform: translateY(1px);
-}
-
-.portrait-btn-primary {
-	background: #1f1d2e;
-	color: #fbf5ef;
-	border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.form-group {
-	max-width: 500px;
+    transform: translateY(1px);
 }

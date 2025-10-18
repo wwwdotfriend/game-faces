@@ -76,7 +76,7 @@ Game Faces adds a chat command for quick expression switching:
 |----------|-------------|
 | `/gf [label]` | Change your controlled actor’s portrait to the expression with the given label. |
 | `/gf toggle` or `/gft` | Toggle clientside visibility of the portrait bar. |
-| `/gfa` | Toggle portrait bar visibility for all users. |
+| `/gfa` or `/gf all` | Toggle portrait bar visibility for all users. |
 
 ---
 
